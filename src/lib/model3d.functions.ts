@@ -66,6 +66,6 @@ export const checkModelGeneration = createServerFn({ method: "POST" })
     const up = await supabase.storage.from("products").upload(path, glb, { contentType: "model/gltf-binary" });
     if (up.error) throw new Error(up.error.message);
     const { data: signed } = await supabase.storage.from("products").createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
-    await supabase.from("products").update({ model_status: "ready", model_url: signed?.signedUrl, model_error: null }).eq("id", data.productId);
+    await supabase.from("products").update({ model_status: "ready", model_url: signed?.signedUrl ?? null, model_error: null }).eq("id", data.productId);
     return { status: "ready" };
   });

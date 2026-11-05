@@ -86,7 +86,7 @@ function ProductsAdmin() {
   const remove = async (p: Product) => {
     if (!confirm(`Excluir "${p.name}"?`)) return;
     const { error } = await supabase.from("products").delete().eq("id", p.id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     qc.invalidateQueries({ queryKey: ["products"] });
   };
 
@@ -291,7 +291,7 @@ function CategoriesAdmin() {
   const add = async () => {
     if (!name) return;
     const { error } = await supabase.from("categories").insert({ name, slug: slugify(name), sort_order: cats.length + 1 });
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     setName(""); refresh();
   };
   const update = async (id: string, patch: Partial<Category>) => {
@@ -339,7 +339,7 @@ function SettingsAdmin() {
   const save = async () => {
     const { id, ...rest } = f;
     const { error } = await supabase.from("store_settings").update(rest).eq("id", 1);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Configurações salvas."); qc.invalidateQueries({ queryKey: ["settings"] });
   };
   const text = (k: keyof typeof f, l: string, hint?: string) => (
