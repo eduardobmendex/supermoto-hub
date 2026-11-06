@@ -8,7 +8,10 @@ export function ProductCard({ p }: { p: Product }) {
     <Link to="/produto/$slug" params={{ slug: p.slug }} className="group block overflow-hidden rounded-lg border bg-card transition hover:-translate-y-1 hover:border-primary/60 hover:shadow-glow">
       <div className="relative aspect-square bg-stage">
         {p.images[0] ? (
-          <img src={p.images[0]} alt={p.name} loading="lazy" className="h-full w-full object-contain p-4 transition duration-500 group-hover:scale-105" />
+          <>
+            <img src={p.images[0]} alt={p.name} loading="lazy" className={`h-full w-full object-contain p-4 transition duration-500 group-hover:scale-105 ${p.images[1] ? "group-hover:opacity-0" : ""}`} />
+            {p.images[1] && <img src={p.images[1]} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-contain p-4 opacity-0 transition duration-500 group-hover:scale-105 group-hover:opacity-100" />}
+          </>
         ) : (
           <div className="flex h-full items-center justify-center text-muted-foreground"><ImageIcon className="size-10" /></div>
         )}

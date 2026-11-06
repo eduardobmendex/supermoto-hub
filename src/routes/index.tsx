@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowRight, Box, Rotate3d, ZoomIn, Smartphone } from "lucide-react";
+import { ArrowRight, Hand, Maximize2, ZoomIn, Smartphone } from "lucide-react";
 import heroImg from "@/assets/hero-helmet.jpg";
 import { SiteLayout } from "@/components/SiteLayout";
 import { ProductGrid } from "@/components/ProductCard";
@@ -10,10 +10,10 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "SuperMotos — Equipamentos para motociclistas com visualização 3D" },
-      { name: "description", content: "Capacetes, luvas, jaquetas, botas e peças. Veja cada produto em 3D e compre pelo WhatsApp." },
+      { title: "SuperMotos — Equipamentos para motociclistas" },
+      { name: "description", content: "Capacetes, luvas, jaquetas, botas e peças. Veja cada detalhe e compre pelo WhatsApp." },
       { property: "og:title", content: "SuperMotos — Equipamentos para motociclistas" },
-      { property: "og:description", content: "Veja cada produto em 3D e compre pelo WhatsApp." },
+      { property: "og:description", content: "Veja cada detalhe dos produtos e compre pelo WhatsApp." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -45,12 +45,12 @@ function Home() {
         <img src={s?.banner_image || heroImg} alt="" width={1920} height={1088} className="absolute inset-0 h-full w-full object-cover object-right" />
         <div className="absolute inset-0 bg-hero-fade" />
         <div className="relative mx-auto flex min-h-[78vh] max-w-7xl flex-col justify-center px-4 py-24">
-          <p className="eyebrow animate-in fade-in slide-in-from-bottom-2 duration-700">Nova coleção · Visualização 3D</p>
+          <p className="eyebrow animate-in fade-in slide-in-from-bottom-2 duration-700">Nova coleção</p>
           <h1 className="mt-4 max-w-2xl text-4xl font-bold uppercase leading-[0.95] md:text-7xl animate-in fade-in slide-in-from-bottom-4 duration-700">{s?.banner_title}</h1>
           <p className="mt-6 max-w-md text-lg text-muted-foreground">{s?.banner_subtitle}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button asChild size="lg" className="font-display uppercase shadow-glow"><a href="#destaques">Ver destaques <ArrowRight /></a></Button>
-            <Button asChild size="lg" variant="outline" className="font-display uppercase"><a href="#3d">Como funciona o 3D</a></Button>
+            <Button asChild size="lg" variant="outline" className="font-display uppercase"><a href="#detalhes">Veja cada detalhe</a></Button>
           </div>
         </div>
       </section>
@@ -72,15 +72,15 @@ function Home() {
       <Section eyebrow="Acabou de chegar" title="Lançamentos"><ProductGrid items={active.filter((p) => p.is_new).slice(0, 8)} /></Section>
       <Section eyebrow="Preço especial" title="Ofertas"><ProductGrid items={active.filter((p) => p.old_price).slice(0, 8)} /></Section>
 
-      <section id="3d" className="mx-auto mt-24 max-w-7xl px-4">
+      <section id="detalhes" className="mx-auto mt-24 max-w-7xl px-4">
         <div className="grid gap-10 rounded-xl border bg-stage p-8 md:grid-cols-2 md:p-14">
           <div>
             <p className="eyebrow">Experiência exclusiva</p>
-            <h2 className="mt-3 text-3xl font-bold uppercase md:text-5xl">Veja cada detalhe em 3D</h2>
-            <p className="mt-4 text-muted-foreground">Nossos produtos são transformados em modelos tridimensionais reais. Gire, aproxime e inspecione acabamentos antes de comprar — direto no navegador.</p>
+            <h2 className="mt-3 text-3xl font-bold uppercase md:text-5xl">Veja cada detalhe de perto</h2>
+            <p className="mt-4 text-muted-foreground">Passe o mouse sobre a foto para ampliar, abra em tela cheia e inspecione acabamentos e costuras antes de comprar — no computador ou no celular.</p>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            {[[Rotate3d, "Gire 360°"], [ZoomIn, "Zoom nos detalhes"], [Box, "Modelo 3D real"], [Smartphone, "No celular e PC"]].map(([Icon, t]: any) => (
+            {[[ZoomIn, "Zoom nos detalhes"], [Maximize2, "Tela cheia"], [Hand, "Pinça e deslize"], [Smartphone, "No celular e PC"]].map(([Icon, t]: any) => (
               <div key={t} className="rounded-lg border bg-background/60 p-5 backdrop-blur"><Icon className="size-7 text-primary" /><p className="mt-3 font-display font-semibold uppercase">{t}</p></div>
             ))}
           </div>

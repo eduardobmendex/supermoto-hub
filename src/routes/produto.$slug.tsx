@@ -12,9 +12,9 @@ export const Route = createFileRoute("/produto/$slug")({
   head: () => ({
     meta: [
       { title: "Produto — SuperMotos" },
-      { name: "description", content: "Veja o produto em 3D e compre pelo WhatsApp na SuperMotos." },
+      { name: "description", content: "Veja cada detalhe do produto e compre pelo WhatsApp na SuperMotos." },
       { property: "og:title", content: "Produto — SuperMotos" },
-      { property: "og:description", content: "Veja o produto em 3D e compre pelo WhatsApp." },
+      { property: "og:description", content: "Veja cada detalhe do produto e compre pelo WhatsApp." },
       { property: "og:type", content: "product" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

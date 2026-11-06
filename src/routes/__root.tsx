@@ -56,7 +56,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "SuperMotos" },
-      { name: "description", content: "Equipamentos e acessórios para motociclistas com visualização 3D." },
+      { name: "description", content: "Equipamentos e acessórios para motociclistas. Veja cada detalhe e compre pelo WhatsApp." },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

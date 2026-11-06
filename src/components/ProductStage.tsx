@@ -1,6 +1,7 @@
 import { lazy, Suspense, useState } from "react";
 import { ClientOnly } from "@tanstack/react-router";
 import { Box, Image as ImageIcon, Loader2, Move3d } from "lucide-react";
+import { ProductGallery } from "./ProductGallery";
 import type { Product } from "@/lib/store";
 
 const ModelViewer = lazy(() => import("./ModelViewer"));
@@ -8,7 +9,6 @@ const ModelViewer = lazy(() => import("./ModelViewer"));
 export function ProductStage({ product }: { product: Product }) {
   const has3d = product.model_status === "ready" && !!product.model_url && product.model_approved;
   const [mode, setMode] = useState<"3d" | number>(has3d ? "3d" : 0);
-  const img = typeof mode === "number" ? product.images[mode] : null;
 
   return (
     <div className="space-y-3">
@@ -19,8 +19,8 @@ export function ProductStage({ product }: { product: Product }) {
               <ModelViewer url={product.model_url!} />
             </Suspense>
           </ClientOnly>
-        ) : img ? (
-          <img src={img} alt={product.name} className="h-full w-full object-contain p-6" />
+        ) : product.images.length ? (
+          <ProductGallery images={product.images} alt={product.name} index={typeof mode === "number" ? mode : 0} onIndexChange={setMode} />
         ) : (
           <div className="flex h-full items-center justify-center text-muted-foreground"><ImageIcon className="size-12" /></div>
         )}

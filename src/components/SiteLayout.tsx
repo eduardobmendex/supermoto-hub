@@ -49,7 +49,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
         <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 md:grid-cols-3">
           <div>
             <span className="font-display text-2xl font-bold uppercase italic">Super<span className="text-primary">Motos</span></span>
-            <p className="mt-3 text-sm text-muted-foreground">Equipamentos, acessórios e peças para motociclistas exigentes — com visualização 3D.</p>
+            <p className="mt-3 text-sm text-muted-foreground">Equipamentos, acessórios e peças para motociclistas exigentes.</p>
           </div>
           <div className="space-y-3 text-sm text-muted-foreground">
             <p className="flex gap-2"><MapPin className="size-4 shrink-0 text-primary" />{s?.address}</p>
