@@ -9,9 +9,9 @@ import { Label } from "@/components/ui/label";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Entrar — Painel SuperMotos" },
-      { name: "description", content: "Acesso ao painel administrativo da SuperMotos." },
-      { property: "og:title", content: "Entrar — Painel SuperMotos" },
+      { title: "Entrar — Painel APEX" },
+      { name: "description", content: "Acesso ao painel administrativo da APEX." },
+      { property: "og:title", content: "Entrar — Painel APEX" },
       { property: "og:description", content: "Acesso ao painel administrativo." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -52,7 +52,7 @@ function AuthPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-stage px-4">
       <form onSubmit={submit} className="w-full max-w-sm space-y-4 rounded-xl border bg-card p-8">
-        <h1 className="font-display text-2xl font-bold uppercase italic">Super<span className="text-primary">Motos</span></h1>
+        <h1 className="font-display text-3xl font-extrabold uppercase italic">APEX</h1>
         <p className="text-sm text-muted-foreground">{mode === "in" ? "Acesse o painel da loja." : "Crie a conta da proprietária. A primeira conta criada recebe acesso de administração."}</p>
         <div className="space-y-2"><Label htmlFor="email">E-mail</Label><Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} /></div>
         <div className="space-y-2"><Label htmlFor="pw">Senha</Label><Input id="pw" type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} /></div>

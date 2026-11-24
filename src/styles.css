@@ -5,8 +5,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-display: "Chakra Petch", ui-sans-serif, sans-serif;
-  --font-sans: "Manrope", ui-sans-serif, sans-serif;
+  --font-display: "Barlow Condensed", ui-sans-serif, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -36,47 +37,79 @@
 }
 
 :root {
-  --radius: 0.375rem;
-  --background: oklch(0.14 0.005 260);
-  --foreground: oklch(0.96 0.005 80);
-  --card: oklch(0.18 0.006 260);
-  --card-foreground: oklch(0.96 0.005 80);
-  --popover: oklch(0.18 0.006 260);
-  --popover-foreground: oklch(0.96 0.005 80);
-  --primary: oklch(0.68 0.2 42);
-  --primary-foreground: oklch(0.14 0.005 260);
-  --secondary: oklch(0.23 0.006 260);
-  --secondary-foreground: oklch(0.96 0.005 80);
-  --muted: oklch(0.22 0.006 260);
-  --muted-foreground: oklch(0.68 0.01 260);
-  --accent: oklch(0.26 0.008 260);
-  --accent-foreground: oklch(0.96 0.005 80);
-  --destructive: oklch(0.62 0.22 25);
-  --destructive-foreground: oklch(0.98 0 0);
-  --success: oklch(0.72 0.17 150);
-  --whatsapp: oklch(0.7 0.17 152);
-  --whatsapp-foreground: oklch(0.14 0.005 260);
-  --border: oklch(0.28 0.006 260);
-  --input: oklch(0.3 0.006 260);
-  --ring: oklch(0.68 0.2 42);
-  --gradient-hero: linear-gradient(90deg, oklch(0.12 0.005 260 / 0.95) 0%, oklch(0.12 0.005 260 / 0.6) 45%, transparent 75%);
-  --gradient-stage: radial-gradient(ellipse at 50% 60%, oklch(0.26 0.03 42) 0%, oklch(0.16 0.006 260) 60%, oklch(0.12 0.005 260) 100%);
-  --shadow-glow: 0 10px 40px -12px oklch(0.68 0.2 42 / 0.55);
+  /* APEX palette: deep black #101114, graphite #25282D, racing red #E5252A, ice white #E8E8E5, metal gray #8C969F */
+  --radius: 0.125rem;
+  --background: #101114;
+  --foreground: #e8e8e5;
+  --card: #16181c;
+  --card-foreground: #e8e8e5;
+  --popover: #16181c;
+  --popover-foreground: #e8e8e5;
+  --primary: #e5252a;
+  --primary-foreground: #ffffff;
+  --secondary: #25282d;
+  --secondary-foreground: #e8e8e5;
+  --muted: #1d2024;
+  --muted-foreground: #8c969f;
+  --accent: #25282d;
+  --accent-foreground: #e8e8e5;
+  /* Warm amber on purpose: the destructive tone must not be mistaken for the racing-red accent. */
+  --destructive: #ff8a5c;
+  --destructive-foreground: #101114;
+  --success: #3fb27f;
+  --whatsapp: #2fbf71;
+  --whatsapp-foreground: #101114;
+  --border: #2b2f35;
+  --input: #343940;
+  --ring: #e5252a;
+  --gradient-hero: linear-gradient(90deg, #101114 0%, #101114f2 38%, #10111499 62%, transparent 100%);
+  --gradient-stage: radial-gradient(ellipse at 50% 55%, #2c3036 0%, #1a1c20 55%, #101114 100%);
+  --shadow-glow: 0 12px 40px -14px #e5252a99;
 }
 
 @layer base {
   * { border-color: var(--color-border); }
   body { background-color: var(--color-background); color: var(--color-foreground); font-family: var(--font-sans); }
-  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.01em; }
+  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: 0.005em; }
+  :focus-visible { outline: 2px solid var(--color-ring); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+}
+
+@keyframes reveal-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal { animation: reveal-in linear both; animation-timeline: view(); animation-range: entry 0% entry 40%; }
+  }
 }
 
 @utility bg-hero-fade { background: var(--gradient-hero); }
 @utility bg-stage { background: var(--gradient-stage); }
 @utility shadow-glow { box-shadow: var(--shadow-glow); }
 @utility eyebrow {
-  font-family: var(--font-display);
+  font-family: var(--font-mono);
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  font-size: 0.6875rem;
   color: var(--color-primary);
 }
+/* Small technical labels: codes, SKUs, specifications. */
+@utility tech {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.6875rem;
+}
+/* Carbon-fibre weave, kept very quiet. */
+@utility bg-carbon {
+  background-color: #121418;
+  background-image:
+    linear-gradient(45deg, #0c0d10 25%, transparent 25%, transparent 75%, #0c0d10 75%),
+    linear-gradient(45deg, #0c0d10 25%, transparent 25%, transparent 75%, #0c0d10 75%);
+  background-size: 8px 8px;
+  background-position: 0 0, 4px 4px;
+}
+/* The racing cut: one angled corner. */
+@utility clip-corner { clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%); }

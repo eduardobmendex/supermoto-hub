@@ -12,7 +12,7 @@ export function ProductStage({ product }: { product: Product }) {
 
   return (
     <div className="space-y-3">
-      <div className="relative aspect-square overflow-hidden rounded-lg border bg-stage">
+      <div className="relative aspect-square overflow-hidden border bg-stage lg:aspect-auto lg:h-[clamp(28rem,calc(100svh-17rem),52rem)]">
         {mode === "3d" && has3d ? (
           <ClientOnly fallback={<Spinner />}>
             <Suspense fallback={<Spinner />}>
@@ -27,11 +27,6 @@ export function ProductStage({ product }: { product: Product }) {
         {mode === "3d" && has3d && (
           <div className="pointer-events-none absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-background/70 px-3 py-1.5 text-xs text-muted-foreground backdrop-blur">
             <Move3d className="size-4 text-primary" /> Arraste para girar · role para zoom
-          </div>
-        )}
-        {!has3d && product.model_status === "processing" && (
-          <div className="absolute left-3 top-3 flex items-center gap-2 rounded-full bg-background/80 px-3 py-1.5 text-xs backdrop-blur">
-            <Loader2 className="size-3.5 animate-spin text-primary" /> Visualização 3D em preparação
           </div>
         )}
       </div>

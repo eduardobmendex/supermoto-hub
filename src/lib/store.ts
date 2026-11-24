@@ -42,15 +42,47 @@ export const categoriesQuery = queryOptions({
   },
 });
 
+/**
+ * What the storefront reads: the product plus its photos, specifications and brand from the catalog
+ * tables (product_media, product_specs, brands). Row-level security only returns them for active products.
+ */
+export const STOREFRONT_SELECT =
+  "*, brands(name), product_media(url, kind, alt, sort_order, is_primary), product_specs(label, value, sort_order)" as const;
+
+type StorefrontRow = Product & {
+  brands?: { name: string } | null;
+  product_media?: {
+    url: string | null;
+    kind: string;
+    alt: string;
+    sort_order: number;
+    is_primary: boolean;
+  }[];
+  product_specs?: { label: string; value: string; sort_order: number }[];
+};
+
+/** Puts a storefront row in the shape the components use: images and specs come from the catalog tables. */
+export function toStorefrontProduct(row: StorefrontRow): Product {
+  const { brands, product_media, product_specs, ...product } = row;
+  const images = (product_media ?? [])
+    .filter((m) => m.kind === "image" && m.url)
+    .sort((a, b) => Number(b.is_primary) - Number(a.is_primary) || a.sort_order - b.sort_order)
+    .map((m) => m.url as string);
+  const specs = [...(product_specs ?? [])]
+    .sort((a, b) => a.sort_order - b.sort_order)
+    .map((s) => ({ label: s.label, value: s.value }));
+  return { ...product, brand: brands?.name ?? product.brand, images, specs };
+}
+
 export const productsQuery = queryOptions({
   queryKey: ["products"],
   queryFn: async () => {
     const { data, error } = await supabase
       .from("products")
-      .select("*")
+      .select(STOREFRONT_SELECT)
       .order("created_at", { ascending: false });
     if (error) throw error;
-    return data;
+    return data.map(toStorefrontProduct);
   },
 });
 
@@ -58,9 +90,13 @@ export const productQuery = (slug: string) =>
   queryOptions({
     queryKey: ["product", slug],
     queryFn: async () => {
-      const { data, error } = await supabase.from("products").select("*").eq("slug", slug).maybeSingle();
+      const { data, error } = await supabase
+        .from("products")
+        .select(STOREFRONT_SELECT)
+        .eq("slug", slug)
+        .maybeSingle();
       if (error) throw error;
-      return data;
+      return data ? toStorefrontProduct(data) : null;
     },
   });
 
@@ -75,6 +111,31 @@ export async function uploadFile(file: File, folder: string) {
     .createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
   if (e2) throw e2;
   return data.signedUrl;
+}
+
+/** Like uploadFile, but also returns the storage path, so the file can be deleted when its record is removed. */
+export async function uploadProductFile(
+  file: File,
+  folder: string,
+  options?: { contentType?: string; cacheControl?: string },
+) {
+  const ext = file.name.split(".").pop() ?? "bin";
+  const path = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+  const { error } = await supabase.storage
+    .from("products")
+    .upload(path, file, { upsert: false, ...options });
+  if (error) throw error;
+  const { data, error: signError } = await supabase.storage
+    .from("products")
+    .createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
+  if (signError) throw signError;
+  return { path, url: data.signedUrl };
+}
+
+export async function removeProductFiles(paths: string[]) {
+  if (!paths.length) return;
+  const { error } = await supabase.storage.from("products").remove(paths);
+  if (error) throw error;
 }
 
 export const STATUS_LABEL: Record<string, string> = {

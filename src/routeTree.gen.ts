@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BuscaRouteImport } from './routes/busca'
+import { Route as CatalogoRouteImport } from './routes/catalogo'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as CategoriaSlugRouteImport } from './routes/categoria.$slug'
 import { Route as ProdutoSlugRouteImport } from './routes/produto.$slug'
@@ -36,6 +37,11 @@ const BuscaRoute = BuscaRouteImport.update({
   path: '/busca',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CatalogoRoute = CatalogoRouteImport.update({
+  id: '/catalogo',
+  path: '/catalogo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -56,6 +62,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/busca': typeof BuscaRoute
+  '/catalogo': typeof CatalogoRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/categoria/$slug': typeof CategoriaSlugRoute
   '/produto/$slug': typeof ProdutoSlugRoute
@@ -64,6 +71,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/busca': typeof BuscaRoute
+  '/catalogo': typeof CatalogoRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/categoria/$slug': typeof CategoriaSlugRoute
   '/produto/$slug': typeof ProdutoSlugRoute
@@ -74,6 +82,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/busca': typeof BuscaRoute
+  '/catalogo': typeof CatalogoRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/categoria/$slug': typeof CategoriaSlugRoute
   '/produto/$slug': typeof ProdutoSlugRoute
@@ -81,16 +90,29 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/auth' | '/busca' | '/admin' | '/categoria/$slug' | '/produto/$slug'
+    | '/'
+    | '/auth'
+    | '/busca'
+    | '/catalogo'
+    | '/admin'
+    | '/categoria/$slug'
+    | '/produto/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
-    '/' | '/auth' | '/busca' | '/admin' | '/categoria/$slug' | '/produto/$slug'
+    | '/'
+    | '/auth'
+    | '/busca'
+    | '/catalogo'
+    | '/admin'
+    | '/categoria/$slug'
+    | '/produto/$slug'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
     | '/busca'
+    | '/catalogo'
     | '/_authenticated/admin'
     | '/categoria/$slug'
     | '/produto/$slug'
@@ -101,6 +123,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   BuscaRoute: typeof BuscaRoute
+  CatalogoRoute: typeof CatalogoRoute
   CategoriaSlugRoute: typeof CategoriaSlugRoute
   ProdutoSlugRoute: typeof ProdutoSlugRoute
 }
@@ -133,6 +156,13 @@ declare module '@tanstack/react-router' {
       path: '/busca'
       fullPath: '/busca'
       preLoaderRoute: typeof BuscaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/catalogo': {
+      id: '/catalogo'
+      path: '/catalogo'
+      fullPath: '/catalogo'
+      preLoaderRoute: typeof CatalogoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
@@ -175,6 +205,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   BuscaRoute: BuscaRoute,
+  CatalogoRoute: CatalogoRoute,
   CategoriaSlugRoute: CategoriaSlugRoute,
   ProdutoSlugRoute: ProdutoSlugRoute,
 }
